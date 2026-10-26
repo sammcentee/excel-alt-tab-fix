@@ -52,6 +52,18 @@ For full removal, delete the install folder after you run `Disable.ps1`.
 If the tooltip shows `Excel Alt helper disabled after input failure`, run `Install.ps1` again to restart the helper.
 For other problems, [open an issue](https://github.com/sammcentee/excel-alt-tab-fix/issues) with your Windows version, Excel version, and steps to reproduce.
 
+## Why it happens and how the fix works
+
+Alt has two roles: Windows uses Alt+Tab to change windows, while Excel uses an Alt tap to show ribbon KeyTips.
+After Alt+Tab, Excel can ignore the next Alt tap even though the worksheet already has keyboard focus.
+[Other users report the same behavior](https://learn.microsoft.com/en-us/answers/questions/4879388/excel-ignoring-first-keypress-of-alt-after-task-sw).
+This appears to be an input-state problem after a focus change. The exact internal cause is unconfirmed.
+
+The helper uses [F10, Excel's alternative key for ribbon access](https://support.microsoft.com/en-us/accessibility/excel/keyboard-shortcuts-in-excel), to avoid the problem.
+It briefly holds the left-Alt press until it knows whether you tapped it alone or pressed another key.
+A tap sends F10 to Excel. A combination forwards Alt and the other key, so shortcuts such as Alt+Tab still work.
+This applies only while a normal Excel main window is active.
+
 ## License
 
 [MIT](LICENSE). This project is not affiliated with Microsoft.
